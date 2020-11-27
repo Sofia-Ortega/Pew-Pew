@@ -22,6 +22,9 @@ function draw() {
     //displaying shapes
     p1.display()
     newRect.display()
+    bullets.forEach(bullets => {
+        bullets.display();
+    })
 
     //updating coordinates
     p1.controls();
@@ -29,15 +32,18 @@ function draw() {
     //checking if hit
     coord = p1.coordinates;
     hit = newRect.checkHit(coord[0], coord[1]) || !(border.checkHit(coord[0], coord[1]));
-    p1.teleport(hit);
 
-    if (mouseIsPressed) {
-        bullets.push(new Bullet(coord[0], coord[1]))
+    if (hit) {
+        p1.teleport(true);
+        bullets = [];
     }
-    bullets.forEach(bullets => {
-        bullets.display();
-    })
 
 
 
+
+
+}
+
+function mouseClicked() {
+    bullets.push(new Bullet(coord[0], coord[1]))
 }
