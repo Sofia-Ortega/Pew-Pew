@@ -5,10 +5,15 @@ class Player {
         // color array of color
         //startx and stary is default start point
         this.color = color;
+        this.startx = startx;
+        this.starty = starty;
         this.x = startx;
         this.y = starty;
     }
 
+    get coordinates() {
+        return [this.x, this.y]
+    }
     controls() {
         if(keyIsDown(87)) {
             this.y-=3;
@@ -26,7 +31,15 @@ class Player {
     }
 
     display() {
-        circle(this.x, this.y, 10);
+        fill(this.color);
+        circle(this.x, this.y, 50);
+    }
+
+    teleport(hit) {
+        if(hit) {
+            this.x = this.startx;
+            this.y = this.starty;
+        }
     }
 
 }

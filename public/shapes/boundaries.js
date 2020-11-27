@@ -8,12 +8,13 @@ class Boundaries {
 
     }
 
-    checkHit(userx, usery, userRadius) {
-        return collideRectCircle(this.x, this.y, this.w, this.h, userx, usery, userRadius);
+    checkHit(userx, usery) {
+        return collideRectCircle(this.x, this.y, this.w, this.h, userx, usery, 50);
 
     }
 
     display() {
+        fill(0)
         rect(this.x, this.y, this.w, this.h);
     }
 }
