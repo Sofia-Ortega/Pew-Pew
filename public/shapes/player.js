@@ -9,12 +9,16 @@ class Player {
         this.starty = starty;
         this.x = startx;
         this.y = starty;
+        this.theta = 0;
+        this.nx = (Math.cos(this.theta)*25) + this.x;
+        this.ny = (-Math.sin(this.theta)*25) + this.y;
     }
 
     get coordinates() {
         return [this.x, this.y]
     }
     controls() {
+        // to move player
         if(keyIsDown(87)) {
             this.y-=3;
         }
@@ -28,11 +32,27 @@ class Player {
 
             this.x+=3;
         }
+
+        // to aim
+        if(keyIsDown(39) || keyIsDown(38)) {
+            this.theta -= 0.05;
+        } else if(keyIsDown(37) || keyIsDown(40)) {
+            this.theta += 0.05;
+        }
+
     }
 
     display() {
         fill(this.color);
+
+        noStroke();
         circle(this.x, this.y, 50);
+
+        //line in player
+        stroke(255);
+        this.nx = (Math.cos(this.theta)*25) + this.x;
+        this.ny = (-Math.sin(this.theta)*25) + this.y;
+        line(this.x, this.y, this.nx, this.ny);
     }
 
     teleport(hit) {
@@ -43,7 +63,7 @@ class Player {
     }
 
     shoot() {
-
+        //FIXME: Shoots bullet in direction of aimer
     }
 
 }

@@ -48,14 +48,14 @@ function draw() {
     //clear off-screen bullets
     bullets = clearBullet(bullets);
 
-    //line in player
-    stroke(255);
-    nx= (Math.cos(theta)*25) + coord[0];//lots of unit circle
-    ny = (-Math.sin(theta)*25) + coord[1];
-    if(mouseIsPressed) {
-        theta += .025;
-    }
-    line(coord[0], coord[1], nx, ny);
+    // //line in player
+    // stroke(255);
+    // nx= (Math.cos(theta)*25) + coord[0];//lots of unit circle
+    // ny = (-Math.sin(theta)*25) + coord[1];
+    // if(mouseIsPressed) {
+    //     theta += .025;
+    // }
+    // line(coord[0], coord[1], nx, ny);
 
 
 }
