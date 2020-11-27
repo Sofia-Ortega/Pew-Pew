@@ -1,9 +1,8 @@
-hit = false;
+var hit = false;
 var x, y;
 var r = 50
 var newRect;
 
-// const Boundaries = require('./shapes/boundaries');
 
 function setup() {
     createCanvas(800, 600);
@@ -35,16 +34,16 @@ function draw() {
 
 
 function controls() {
-    if(keyIsDown(38)) {
+    if(keyIsDown(87)) {
         y-=3;
     }
-    else if(keyIsDown(40)) {
+    else if(keyIsDown(83)) {
         y+=3;
     }
-    if(keyIsDown(37)) {
+    if(keyIsDown(65)) {
         x-=3;
     }
-    else if(keyIsDown(39)) {
+    else if(keyIsDown(68)) {
 
         x+=3;
     }
@@ -56,22 +55,3 @@ function teleport(hit) {
         y = height/2;
     }
 }
-
-// class Boundaries {
-//     constructor(x1, y1, width, height) {
-//         this.x = x1;
-//         this.y = y1;
-//         this.w = width;
-//         this.h = height;
-//
-//     }
-//
-//     checkHit(userx, usery, userRadius) {
-//         return collideRectCircle(this.x, this.y, this.w, this.h, userx, usery, userRadius);
-//
-//     }
-//
-//     display() {
-//         rect(this.x, this.y, this.w, this.h);
-//     }
-// }
