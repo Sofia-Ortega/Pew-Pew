@@ -42,4 +42,8 @@ class Player {
         }
     }
 
+    shoot() {
+
+    }
+
 }

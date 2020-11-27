@@ -1,8 +1,8 @@
 var hit = false;
 var x, y;
-var r = 50;
 var coord;
 var newRect, p1, border;
+var bullets = []
 
 
 
@@ -31,6 +31,13 @@ function draw() {
     hit = newRect.checkHit(coord[0], coord[1]) || !(border.checkHit(coord[0], coord[1]));
     p1.teleport(hit);
 
+    if (mouseIsPressed) {
+        bullets.push(new Bullet(coord[0], coord[1]))
+    }
+    bullets.forEach(bullets => {
+        bullets.display();
+    })
+
+
 
 }
-
