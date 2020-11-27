@@ -1,6 +1,6 @@
 hit = false;
 var x, y;
-var r = 100
+var r = 50
 
 
 function setup() {
@@ -9,7 +9,7 @@ function setup() {
     x = width/2;
     y = height/2;
 
-    newRect = new Boundaries(10, 20, 50, 10)
+    newRect = new Boundaries(30, 50, 60, 100)
 }
 
 function draw() {
@@ -19,10 +19,10 @@ function draw() {
 
 
     fill([255, 204, 0]);
-    circle(x, y, 100)
+    circle(x, y, r)
     newRect.display()
+
     hit = newRect.checkHit(x, y, r)
-    // hit = collideRectCircle(x1, y1, w1, h1, x, y, 100)
 
     controls();
     teleport(hit);
@@ -56,11 +56,12 @@ function teleport(hit) {
 }
 
 class Boundaries {
-    constructor(x1, y1, height, width) {
+    constructor(x1, y1, width, height) {
         this.x = x1;
         this.y = y1;
-        this.h = height;
         this.w = width;
+        this.h = height;
+
     }
 
     checkHit(userx, usery, userRadius) {
@@ -69,6 +70,6 @@ class Boundaries {
     }
 
     display() {
-        rect(this.x, this.y, this.h, this.w);
+        rect(this.x, this.y, this.w, this.h);
     }
 }
