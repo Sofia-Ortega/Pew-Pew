@@ -16,7 +16,7 @@ class Bullet {
 
     update() {
         this.y += 5;
-        print(this.y);
+        //print(this.y);
 
     }
 
