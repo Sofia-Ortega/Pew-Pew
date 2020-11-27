@@ -1,11 +1,11 @@
 
-
 class Boundaries {
-    constructor(x1, y1, height, width) {
+    constructor(x1, y1, width, height) {
         this.x = x1;
         this.y = y1;
-        this.h = height;
         this.w = width;
+        this.h = height;
+
     }
 
     checkHit(userx, usery, userRadius) {
@@ -14,7 +14,7 @@ class Boundaries {
     }
 
     display() {
-        rect(this.x, this.y, this.h, this.w);
+        rect(this.x, this.y, this.w, this.h);
     }
 }
 
