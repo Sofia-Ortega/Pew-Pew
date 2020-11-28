@@ -1,9 +1,11 @@
 
 
 class Bullet {
-    constructor(x, y){
+    constructor(x, y, dirx, diry){
         this.x = x;
         this.y = y;
+        this.dirx = dirx/5;
+        this.diry = diry/5;
     }
 
     get coordinates() {
@@ -15,10 +17,11 @@ class Bullet {
     }
 
     update() {
-        this.y += 5;
-        //print(this.y);
-
+        this.x += this.dirx;
+        this.y += this.diry;
     }
+
+
 
 
 }

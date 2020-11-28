@@ -17,19 +17,21 @@ class Player {
     get coordinates() {
         return [this.x, this.y]
     }
+
+    get aim() {
+        return [this.x, this.nx, this.y, this.ny];
+    }
+
     controls() {
         // to move player
         if(keyIsDown(87)) {
             this.y-=3;
-        }
-        else if(keyIsDown(83)) {
+        } else if(keyIsDown(83)) {
             this.y+=3;
         }
         if(keyIsDown(65)) {
             this.x-=3;
-        }
-        else if(keyIsDown(68)) {
-
+        } else if(keyIsDown(68)) {
             this.x+=3;
         }
 
@@ -62,8 +64,13 @@ class Player {
         }
     }
 
-    shoot() {
-        //FIXME: Shoots bullet in direction of aimer
+    shoot(bullets) {
+        if (keyIsDown(32)) {
+            let dirx = this.nx - this.x;
+            let diry = this.ny - this.y
+            bullets.push(new Bullet(this.nx, this.ny, dirx, diry));
+        }
+        return bullets;
     }
 
 }

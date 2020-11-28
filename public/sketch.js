@@ -1,7 +1,7 @@
 var hit = false;
 var x, y, nx, ny;
 var coord;
-var theta = 0;
+var aimCoord;
 var newRect, p1, border;
 var bullets = []
 
@@ -31,15 +31,19 @@ function draw() {
 
     //updating coordinates
     p1.controls();
+    aimCoord = p1.aim;
     bullets.forEach(bullets => {
+        print(aimCoord);
         bullets.update();
     })
+
+    bullets = p1.shoot(bullets);
 
     //checking if hit
     coord = p1.coordinates;
     hit = newRect.checkHit(coord[0], coord[1]) || !(border.checkHit(coord[0], coord[1]));
 
-    //if hit, teleport player to stargin position and clear bullets
+    //if hit, teleport player to starting position and clear bullets
     if (hit) {
         p1.teleport(true);
         bullets = [];
@@ -48,21 +52,9 @@ function draw() {
     //clear off-screen bullets
     bullets = clearBullet(bullets);
 
-    // //line in player
-    // stroke(255);
-    // nx= (Math.cos(theta)*25) + coord[0];//lots of unit circle
-    // ny = (-Math.sin(theta)*25) + coord[1];
-    // if(mouseIsPressed) {
-    //     theta += .025;
-    // }
-    // line(coord[0], coord[1], nx, ny);
-
 
 }
 
-function mouseClicked() {
-    bullets.push(new Bullet(coord[0], coord[1]))
-}
 
 function clearBullet(bullets) {
     //takes in array of bullet classes and returns updated bullet list w/o bullets that have gone off screen
