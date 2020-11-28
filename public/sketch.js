@@ -1,9 +1,10 @@
 var hit = false;
-var x, y, nx, ny;
+var x, y;
 var coord;
-var aimCoord;
 var newRect, p1, border;
-var bullets = []
+var bullets = [];
+
+
 
 
 
@@ -31,9 +32,7 @@ function draw() {
 
     //updating coordinates
     p1.controls();
-    aimCoord = p1.aim;
     bullets.forEach(bullets => {
-        print(aimCoord);
         bullets.update();
     })
 
@@ -52,7 +51,10 @@ function draw() {
     //clear off-screen bullets
     bullets = clearBullet(bullets);
 
-
+    // if(Math.floor(millis()) % 5 === 0) {
+    //     print(Math.floor(millis()))
+    //
+    // }
 }
 
 

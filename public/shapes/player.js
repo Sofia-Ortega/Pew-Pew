@@ -65,7 +65,7 @@ class Player {
     }
 
     shoot(bullets) {
-        if (keyIsDown(32)) {
+        if (keyIsDown(32) && frameCount % 20 === 0) {
             let dirx = this.nx - this.x;
             let diry = this.ny - this.y
             bullets.push(new Bullet(this.nx, this.ny, dirx, diry));
