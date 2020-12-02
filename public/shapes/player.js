@@ -20,10 +20,6 @@ class Player {
         return [this.x, this.y]
     }
 
-    get aim() {
-        return [this.x, this.nx, this.y, this.ny];
-    }
-
     controls() {
         // to move player
         if(keyIsDown(87)) {
@@ -54,6 +50,7 @@ class Player {
 
         //line in player
         stroke(255);
+        strokeWeight(3);
         this.nx = (Math.cos(this.theta)*25) + this.x;
         this.ny = (-Math.sin(this.theta)*25) + this.y;
         line(this.x, this.y, this.nx, this.ny);
