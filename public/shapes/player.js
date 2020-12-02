@@ -12,7 +12,8 @@ class Player {
         this.theta = 0;
         this.nx = (Math.cos(this.theta)*25) + this.x;
         this.ny = (-Math.sin(this.theta)*25) + this.y;
-        this.storeFrame = -25;
+        this.interval = 25 // changes frequency of bullets
+        this.storeFrame = -this.interval;
     }
 
     get coordinates() {
@@ -66,7 +67,7 @@ class Player {
     }
 
     shoot(bullets) {
-        if (keyIsDown(32) && Math.abs(frameCount-this.storeFrame >= 25)) {
+        if (keyIsDown(32) && Math.abs(frameCount-this.storeFrame >= this.interval)) {
             let dirx = this.nx - this.x;
             let diry = this.ny - this.y
             bullets.push(new Bullet(this.nx, this.ny, dirx, diry));
