@@ -12,6 +12,7 @@ class Player {
         this.theta = 0;
         this.nx = (Math.cos(this.theta)*25) + this.x;
         this.ny = (-Math.sin(this.theta)*25) + this.y;
+        this.storeFrame = -25;
     }
 
     get coordinates() {
@@ -65,10 +66,11 @@ class Player {
     }
 
     shoot(bullets) {
-        if (keyIsDown(32) && frameCount % 20 === 0) {
+        if (keyIsDown(32) && Math.abs(frameCount-this.storeFrame >= 25)) {
             let dirx = this.nx - this.x;
             let diry = this.ny - this.y
             bullets.push(new Bullet(this.nx, this.ny, dirx, diry));
+            this.storeFrame = frameCount
         }
         return bullets;
     }
