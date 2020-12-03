@@ -1,7 +1,7 @@
 var hit = false;
 var x, y;
 var radius = 50;
-var coord, opp;
+var coord, opp, oppBullet;
 var newRect, p1, border;
 var bullets = [];
 let rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
@@ -21,13 +21,19 @@ function setup() {
     socket.on('opp', (data) => {
         opp = data;
     });
+    socket.on('oppBullets', data => {
+        oppBullet = data;
+    })
 }
 
 function draw() {
     background(50);
     noStroke();
 
-
+    if(oppBullet) {
+        fill(255, 255, 255);
+        circle(oppBullet.x, oppBullet.y, 10)
+    }
 
     //displaying shapes
     p1.display();
@@ -53,6 +59,7 @@ function draw() {
     p1.controls();
     bullets.forEach(bullets => {
         bullets.update();
+        socket.emit('bullets', bullets.sendInfo);
     })
 
     bullets = p1.shoot(bullets);
@@ -72,6 +79,7 @@ function draw() {
 
 
     socket.emit('player', p1.sendInfo);
+
 }
 
 

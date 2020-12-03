@@ -12,6 +12,9 @@ io.sockets.on('connection', (socket) => {
     socket.on('player', (data) => {
         socket.broadcast.emit('opp', data)
     })
+    socket.on('bullets', data => {
+        socket.broadcast.emit('oppBullets', data);
+    })
     socket.on('disconnect', () => {
         console.log('user disconnected');
     })
