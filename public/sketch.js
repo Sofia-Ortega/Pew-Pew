@@ -3,25 +3,39 @@ var x, y;
 var coord;
 var newRect, p1, border;
 var bullets = [];
-
+let rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
+var socket;
+var oppBullets;
 
 function setup() {
     createCanvas(600, 600); //FIXME: change borders depending on widht
     noStroke();
     x = width/2;
     y = height/2;
-    p1 = new Player([168, 168, 255], 300, 100);
+    rgb =
+    p1 = new Player(rgb, 300, 100);
     newRect = new Boundaries(500, 50, 60, 100);
     border = new Boundaries(0, 0, width, height);
+
+    socket = io.connect('http://localhost:3000');
+
+    socket.on('opp', (otherP) => {
+        print(otherP);
+    });
 }
 
 function draw() {
     background(50);
     noStroke();
 
+    if(oppBullets) {
+        bullets.push(oppBullets);
+    }
+
+
     //displaying shapes
-    p1.display()
-    newRect.display()
+    p1.display();
+    newRect.display();
     bullets.forEach(bullets => {
         bullets.display();
     })
@@ -48,10 +62,7 @@ function draw() {
     //clear off-screen bullets
     bullets = clearBullet(bullets);
 
-    // if(Math.floor(millis()) % 5 === 0) {
-    //     print(Math.floor(millis()))
-    //
-    // }
+    socket.emit('player', p1)
 }
 
 

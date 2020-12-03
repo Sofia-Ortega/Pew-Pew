@@ -1,11 +1,4 @@
 
-// const express = require('express');
-// //const socket = require('socket.io');
-//
-// const app = express();
-// const http = require('http').createServer(app)
-// var io = socket(http);
-
 const express = require('express')
 const app = express();
 const http = require('http').createServer(app);
@@ -13,10 +6,16 @@ const io = require('socket.io')(http);
 
 app.use(express.static('public'));
 
-//const server = app.listen(3000);
-
-io.on('connection', (socket) => {
+io.sockets.on('connection', (socket) => {
     console.log('a user connected');
+
+    socket.on('player', (oppClass) => {
+        socket.broadcast.emit('opp', oppClass)
+    })
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    })
+
 });
 
 http.listen(3000, () => {
