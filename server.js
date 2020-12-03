@@ -9,8 +9,8 @@ app.use(express.static('public'));
 io.sockets.on('connection', (socket) => {
     console.log('a user connected');
 
-    socket.on('player', (oppClass) => {
-        socket.broadcast.emit('opp', oppClass)
+    socket.on('player', (data) => {
+        socket.broadcast.emit('opp', data)
     })
     socket.on('disconnect', () => {
         console.log('user disconnected');
