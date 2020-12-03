@@ -1,6 +1,7 @@
 var hit = false;
 var x, y;
-var coord, oppCoord;
+var radius = 50;
+var coord, opp;
 var newRect, p1, border;
 var bullets = [];
 let rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
@@ -18,7 +19,7 @@ function setup() {
     socket = io.connect('http://localhost:3000');
 
     socket.on('opp', (data) => {
-        oppCoord = data;
+        opp = data;
     });
 }
 
@@ -36,11 +37,14 @@ function draw() {
     })
 
     //opponent
-    if(oppCoord) {
+    if(opp) {
+        fill(opp.color);
         noStroke();
-        print(rgb);
-        fill(rgb[2], rgb[1], rgb[0]);
-        circle(oppCoord.x, oppCoord.y, 50);
+        circle(opp.x, opp.y, radius);
+
+        stroke(255);
+        strokeWeight(3);
+        line(opp.x, opp.y, opp.nx, opp.ny);
     }
 
 
@@ -66,7 +70,8 @@ function draw() {
     //clear off-screen bullets
     bullets = clearBullet(bullets);
 
-    socket.emit('player', {'x': coord[0], 'y': coord[1]})
+
+    socket.emit('player', p1.sendInfo);
 }
 
 
