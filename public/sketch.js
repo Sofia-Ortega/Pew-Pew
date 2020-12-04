@@ -6,7 +6,7 @@ var newRect, p1, border;
 var bullets = [];
 var bulletsCoord = [];
 let rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
-var socket;
+var socket, id;
 
 //FIXME: add more than 2 players thingy;
 
@@ -19,14 +19,20 @@ function setup() {
     newRect = new Boundaries(500, 50, 60, 100);
     border = new Boundaries(0, 0, width, height);
 
-    socket = io.connect('http://localhost:3000', {reconnection:false});
+    socket = io.connect('http://localhost:3000');
 
     socket.on('opp', (data) => {
+        // console.log("the data:", data);
         opp = data;
     });
+
     socket.on('oppBullets', data => {
         oppBullet = data.xy;
 
+    })
+
+    socket.on('connect', () => {
+        id = socket.id;
     })
 }
 
@@ -43,15 +49,19 @@ function draw() {
         bullets.display();
     })
 
+    if(id) {
+        print(id);
+    }
     //opponent
     if(opp) {
-        fill(opp.color);
-        noStroke();
-        circle(opp.x, opp.y, radius);
-
-        stroke(255);
-        strokeWeight(3);
-        line(opp.x, opp.y, opp.nx, opp.ny);
+        //print(opp);
+    //     fill(opp.color);
+    //     noStroke();
+    //     circle(opp.x, opp.y, radius);
+    //
+    //     stroke(255);
+    //     strokeWeight(3);
+    //     line(opp.x, opp.y, opp.nx, opp.ny);
     }
 
     if(oppBullet) {

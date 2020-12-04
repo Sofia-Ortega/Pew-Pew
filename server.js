@@ -10,7 +10,8 @@ io.sockets.on('connect', (socket) => {
     console.log('a user connected:', socket.id);
 
     socket.on('player', (data) => {
-        socket.broadcast.emit('opp', data)
+        //console.log(socket.id);
+        socket.broadcast.emit('opp', {[socket.id]: data})
     })
     socket.on('bullets', data => {
         socket.broadcast.emit('oppBullets', data);
