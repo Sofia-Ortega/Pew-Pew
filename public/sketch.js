@@ -8,16 +8,18 @@ var bulletsCoord = [];
 let rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
 var socket;
 
+//FIXME: add more than 2 players thingy;
+
 function setup() {
-    createCanvas(600, 600); //FIXME: change borders depending on widht
+    createCanvas(600, 600);
     noStroke();
     x = width/2;
     y = height/2;
-    p1 = new Player(rgb, 300, 100);
+    p1 = new Player(rgb, Math.floor(Math.random()*(width-100)+50), Math.floor(Math.random()*(height-100)+50));
     newRect = new Boundaries(500, 50, 60, 100);
     border = new Boundaries(0, 0, width, height);
 
-    socket = io.connect('http://localhost:3000');
+    socket = io.connect('http://localhost:3000', {reconnection:false});
 
     socket.on('opp', (data) => {
         opp = data;
@@ -32,7 +34,6 @@ function draw() {
     background(50);
     noStroke();
     bulletsCoord = [];
-
 
 
     //displaying shapes

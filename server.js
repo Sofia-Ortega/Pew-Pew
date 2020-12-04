@@ -6,8 +6,8 @@ const io = require('socket.io')(http);
 
 app.use(express.static('public'));
 
-io.sockets.on('connection', (socket) => {
-    console.log('a user connected');
+io.sockets.on('connect', (socket) => {
+    console.log('a user connected:', socket.id);
 
     socket.on('player', (data) => {
         socket.broadcast.emit('opp', data)
@@ -16,7 +16,7 @@ io.sockets.on('connection', (socket) => {
         socket.broadcast.emit('oppBullets', data);
     })
     socket.on('disconnect', () => {
-        console.log('user disconnected');
+        console.log('user disconnected:', socket.id);
     })
 
 });
