@@ -20,13 +20,20 @@ class Player {
         return [this.x, this.y]
     }
 
+    get startInfo() {
+        return {
+            'x': this.x,
+            'y': this.y,
+            'color': this.color
+        }
+    }
+
     get sendInfo() {
         return {
             'x': this.x,
             'y': this.y,
             'nx': this.nx,
-            'ny': this.ny,
-            'color': this.color
+            'ny': this.ny
         }
     }
 

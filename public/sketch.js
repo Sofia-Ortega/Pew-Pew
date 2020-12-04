@@ -1,12 +1,13 @@
 var hit = false;
-var x, y;
-var radius = 50;
-var coord, opp, oppBullet;
+var x, y, oppXY;
+var coord, oppBullet;
+var opp;
 var newRect, p1, border;
 var bullets = [];
 var bulletsCoord = [];
 let rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
 var socket, id;
+var sentStart;
 
 //FIXME: add more than 2 players thingy;
 
@@ -21,9 +22,16 @@ function setup() {
 
     socket = io.connect('http://localhost:3000');
 
-    socket.on('opp', (data) => {
-        // console.log("the data:", data);
-        opp = data;
+
+    socket.on('startInfo', data => {
+        print("Receving startInfo")
+        opp = new Opponent(data.x, data.y, data.color);
+        oppXY = opp.startXY;
+
+    })
+    socket.on('oppXY', (data) => {
+        //console.log("the data for oppXY:", data);
+        oppXY = data;
     });
 
     socket.on('oppBullets', data => {
@@ -34,6 +42,7 @@ function setup() {
     socket.on('connect', () => {
         id = socket.id;
     })
+
 }
 
 function draw() {
@@ -49,19 +58,10 @@ function draw() {
         bullets.display();
     })
 
-    if(id) {
-        print(id);
-    }
+
     //opponent
     if(opp) {
-        //print(opp);
-    //     fill(opp.color);
-    //     noStroke();
-    //     circle(opp.x, opp.y, radius);
-    //
-    //     stroke(255);
-    //     strokeWeight(3);
-    //     line(opp.x, opp.y, opp.nx, opp.ny);
+        opp.display(oppXY.x, oppXY.y, oppXY.nx, oppXY.ny);
     }
 
     if(oppBullet) {
@@ -97,7 +97,11 @@ function draw() {
     bullets = clearBullet(bullets);
 
 
-    socket.emit('player', p1.sendInfo);
+    if(!sentStart) {
+        socket.emit('startInfo', p1.startInfo)
+        sentStart = true;
+    }
+    socket.emit('p1XY', p1.sendInfo);
     socket.emit('bullets', {'xy':bulletsCoord});
 
 }

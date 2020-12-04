@@ -11,7 +11,14 @@ io.sockets.on('connect', (socket) => {
 
     socket.on('player', (data) => {
         //console.log(socket.id);
-        socket.broadcast.emit('opp', {[socket.id]: data})
+        socket.broadcast.emit('opp', data)
+    })
+    socket.on('startInfo', (data) => {
+        console.log("Sending startInfo to:", socket.id)
+        socket.broadcast.emit('startInfo', data)
+    })
+    socket.on('p1XY', data => {
+        socket.broadcast.emit('oppXY', data)
     })
     socket.on('bullets', data => {
         socket.broadcast.emit('oppBullets', data);
