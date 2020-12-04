@@ -70,6 +70,8 @@ class Player {
         if(hit) {
             this.x = this.startx;
             this.y = this.starty;
+            this.nx = (Math.cos(this.theta)*25) + this.x;
+            this.ny = (-Math.sin(this.theta)*25) + this.y;
         }
     }
 
