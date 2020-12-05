@@ -23,16 +23,16 @@ function setup() {
 
     socket = io.connect('http://localhost:3000');
 
-    socket.on('connect', () => {
-        id = socket.id;
+    socket.on('startInfo', playerId => {
+        print("Receving startInfo:", playerId);
+        print("My id:", socket.id);
+
+        for (let id in playerId) {
+            oppArray.push(new Opponent(playerId[id].x, playerId[id].y, playerId[id].color));
+        }
+        print(oppArray);
+
     })
-
-    // socket.on('startInfo', data => {
-    //     print("Receving startInfo:", data);
-        // oppArray.push(new Opponent(data.x, data.y));
-        // oppXY = opp.startXY;
-
-    // })
     // socket.on('oppXY', (data) => {
     //     //console.log("the data for oppXY:", data);
     //     oppXY = data;

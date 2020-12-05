@@ -11,6 +11,8 @@ app.use(express.static('public'));
 io.sockets.on('connect', (socket) => {
     console.log('a user connected:', socket.id);
 
+    io.to(socket.id).emit("startInfo", startPlayers);
+
     socket.on('player', (data) => {
         //console.log(socket.id);
         socket.broadcast.emit('opp', data)

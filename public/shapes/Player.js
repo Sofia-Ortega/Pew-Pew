@@ -33,8 +33,7 @@ class Player {
             'x': this.x,
             'y': this.y,
             'nx': this.nx,
-            'ny': this.ny,
-            'color': this.color
+            'ny': this.ny
         }
     }
 
