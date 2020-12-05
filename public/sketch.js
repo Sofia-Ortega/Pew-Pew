@@ -86,11 +86,12 @@ function draw() {
 
     // // opponent
     // if(oppArray) {
-    //     oppArray.forEach(opp => {
-    //         print(oppArray);
-    //         //opp.display(oppXY.x, oppXY.y, oppXY.nx, oppXY.ny);
-    //     })
-    //
+    oppArray.forEach(opp => {
+       // print(oppArray);
+        //opp.display(oppXY.x, oppXY.y, oppXY.nx, oppXY.ny);
+        opp.testDisplay();
+    })
+
     // }
 
     if(oppBullet) {
@@ -132,7 +133,6 @@ function draw() {
     }
 
     socket.emit('xyPlayer', p1.sendInfo);
-
     socket.emit('bullets', {'xy':bulletsCoord});
 
 }

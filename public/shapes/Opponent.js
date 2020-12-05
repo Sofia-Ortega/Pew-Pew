@@ -24,6 +24,13 @@ class Opponent {
         }
     }
 
+    testDisplay() {
+        fill(this.color)
+        noStroke();
+        circle(this.x, this.y, 50);
+
+
+    }
 
     display(getX, getY, nx, ny) {
             fill(this.color);
