@@ -21,8 +21,10 @@ io.sockets.on('connect', (socket) => {
         startPlayers[socket.id] = data;
         console.log(startPlayers)
     })
-    socket.on('p1XY', data => {
-        socket.broadcast.emit('oppXY', data)
+    socket.on('xyPlayer', data => {
+        data.id = socket.id;
+        //console.log(data);
+        socket.broadcast.emit('oppXY', data);
     })
     socket.on('bullets', data => {
         socket.broadcast.emit('oppBullets', data);
@@ -30,6 +32,7 @@ io.sockets.on('connect', (socket) => {
     socket.on('disconnect', () => {
         console.log('user disconnected:', socket.id);
         delete startPlayers[socket.id]
+        socket.broadcast.emit('oppDisconnect', socket.id)
         console.log(startPlayers)
 
     })

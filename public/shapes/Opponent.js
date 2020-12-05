@@ -1,12 +1,18 @@
 
 
 class Opponent {
-    constructor(startx, starty) {
+    constructor(startx, starty, id, color) {
         this.x = startx;
         this.y = starty;
+        this.color = color;
+        this.oppId = id;
 
         this.radius = 50;
 
+    }
+
+    get id() {
+        return this.oppId;
     }
 
     get startXY() {
@@ -19,8 +25,8 @@ class Opponent {
     }
 
 
-    display(getX, getY, nx, ny, color) {
-            fill(color);
+    display(getX, getY, nx, ny) {
+            fill(this.color);
             noStroke();
             circle(getX, getY, this.radius);
 

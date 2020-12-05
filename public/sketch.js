@@ -13,23 +13,34 @@ var sentStart;
 //FIXME: add more than 2 players thingy;
 
 function setup() {
-    createCanvas(600, 600);
-    noStroke();
-    x = width/2;
-    y = height/2;
-    p1 = new Player(rgb, Math.floor(Math.random()*(width-100)+50), Math.floor(Math.random()*(height-100)+50));
-    newRect = new Boundaries(500, 50, 60, 100);
-    border = new Boundaries(0, 0, width, height);
-
+    //............................Receiving..........................................
     socket = io.connect('http://localhost:3000');
 
+    socket.on('connect', () => {
+        id = socket.id;
+    })
     socket.on('startInfo', playerId => {
         print("Receving startInfo:", playerId);
-        print("My id:", socket.id);
+        print("My id:", id);
 
         for (let id in playerId) {
-            oppArray.push(new Opponent(playerId[id].x, playerId[id].y, playerId[id].color));
+            oppArray.push(new Opponent(playerId[id].x, playerId[id].y, id, playerId[id].color));
         }
+        print(oppArray);
+
+    })
+
+    socket.on('oppDisconnect', disconnectId => {
+        print("Player has disconnected:", disconnectId);
+        let i;
+        for(i = oppArray.length; i >= 0; i -= 1) {
+            if(oppArray[i]){
+                if(oppArray[i].id === disconnectId){
+                    oppArray.splice(i, 1);
+                }
+            }
+        }
+
         print(oppArray);
 
     })
@@ -43,7 +54,14 @@ function setup() {
 
     })
 
-
+    //...............................Canvas Setup.....................................
+    createCanvas(600, 600);
+    noStroke();
+    x = width/2;
+    y = height/2;
+    p1 = new Player(rgb, Math.floor(Math.random()*(width-100)+50), Math.floor(Math.random()*(height-100)+50));
+    //newRect = new Boundaries(500, 50, 60, 100);
+    border = new Boundaries(0, 0, width, height);
 
 }
 
@@ -52,19 +70,19 @@ function draw() {
     noStroke();
     bulletsCoord = [];
 
-
     //displaying shapes
     p1.display();
-    newRect.display();
+    //newRect.display();
     bullets.forEach(bullets => {
         bullets.display();
     })
 
 
-    // //opponent
+    // // opponent
     // if(oppArray) {
     //     oppArray.forEach(opp => {
-    //         opp.display(oppXY.x, oppXY.y, oppXY.nx, oppXY.ny, oppXY.color);
+    //         print(oppArray);
+    //         //opp.display(oppXY.x, oppXY.y, oppXY.nx, oppXY.ny);
     //     })
     //
     // }
@@ -90,7 +108,7 @@ function draw() {
 
     //checking if hit
     coord = p1.coordinates;
-    hit = newRect.checkHit(coord[0], coord[1]) || !(border.checkHit(coord[0], coord[1]));
+    hit = /*newRect.checkHit(coord[0], coord[1]) || */!(border.checkHit(coord[0], coord[1]));
 
     //if hit, teleport player to starting position and clear bullets
     if (hit) {
@@ -106,7 +124,9 @@ function draw() {
         socket.emit('startInfo', p1.startInfo)
         sentStart = true;
     }
-    socket.emit('p1XY', p1.sendInfo);
+
+    socket.emit('xyPlayer', p1.sendInfo);
+
     socket.emit('bullets', {'xy':bulletsCoord});
 
 }
