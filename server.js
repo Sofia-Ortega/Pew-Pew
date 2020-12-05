@@ -5,13 +5,13 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
 var startPlayers = {}
+var indivPlayerInfo = {}
 
 app.use(express.static('public'));
 
 io.sockets.on('connect', (socket) => {
     console.log('a user connected:', socket.id);
-
-    io.to(socket.id).emit("startInfo", startPlayers);
+    io.to(socket.id).emit("startPacket", startPlayers);
 
     socket.on('player', (data) => {
         //console.log(socket.id);
@@ -19,6 +19,10 @@ io.sockets.on('connect', (socket) => {
     })
     socket.on('startInfo', (data) => {
         startPlayers[socket.id] = data;
+
+        data.id = socket.id;
+        socket.broadcast.emit('oppConnect', data)
+
         console.log(startPlayers)
     })
     socket.on('xyPlayer', data => {

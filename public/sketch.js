@@ -19,7 +19,7 @@ function setup() {
     socket.on('connect', () => {
         id = socket.id;
     })
-    socket.on('startInfo', playerId => {
+    socket.on('startPacket', playerId => {
         print("Receving startInfo:", playerId);
         print("My id:", id);
 
@@ -28,6 +28,12 @@ function setup() {
         }
         print(oppArray);
 
+    })
+
+    socket.on('oppConnect', (connectId) => {
+        //print("Opponent connecting:", connectId);
+        oppArray.push(new Opponent(connectId.x, connectId.y, connectId.id, connectId.color));
+        print("Opp connecting:", oppArray)
     })
 
     socket.on('oppDisconnect', disconnectId => {
