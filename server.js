@@ -4,6 +4,8 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
+var startPlayers = {}
+
 app.use(express.static('public'));
 
 io.sockets.on('connect', (socket) => {
@@ -14,8 +16,8 @@ io.sockets.on('connect', (socket) => {
         socket.broadcast.emit('opp', data)
     })
     socket.on('startInfo', (data) => {
-        console.log("Sending startInfo to:", socket.id)
-        socket.broadcast.emit('startInfo', data)
+        startPlayers[socket.id] = data;
+        console.log(startPlayers)
     })
     socket.on('p1XY', data => {
         socket.broadcast.emit('oppXY', data)
@@ -25,6 +27,9 @@ io.sockets.on('connect', (socket) => {
     })
     socket.on('disconnect', () => {
         console.log('user disconnected:', socket.id);
+        delete startPlayers[socket.id]
+        console.log(startPlayers)
+
     })
 
 });

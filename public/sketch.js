@@ -2,6 +2,7 @@ var hit = false;
 var x, y, oppXY;
 var coord, oppBullet;
 var opp;
+var oppArray = []
 var newRect, p1, border;
 var bullets = [];
 var bulletsCoord = [];
@@ -22,26 +23,27 @@ function setup() {
 
     socket = io.connect('http://localhost:3000');
 
-
-    socket.on('startInfo', data => {
-        print("Receving startInfo")
-        opp = new Opponent(data.x, data.y, data.color);
-        oppXY = opp.startXY;
-
+    socket.on('connect', () => {
+        id = socket.id;
     })
-    socket.on('oppXY', (data) => {
-        //console.log("the data for oppXY:", data);
-        oppXY = data;
-    });
+
+    // socket.on('startInfo', data => {
+    //     print("Receving startInfo:", data);
+        // oppArray.push(new Opponent(data.x, data.y));
+        // oppXY = opp.startXY;
+
+    // })
+    // socket.on('oppXY', (data) => {
+    //     //console.log("the data for oppXY:", data);
+    //     oppXY = data;
+    // });
 
     socket.on('oppBullets', data => {
         oppBullet = data.xy;
 
     })
 
-    socket.on('connect', () => {
-        id = socket.id;
-    })
+
 
 }
 
@@ -59,10 +61,13 @@ function draw() {
     })
 
 
-    //opponent
-    if(opp) {
-        opp.display(oppXY.x, oppXY.y, oppXY.nx, oppXY.ny);
-    }
+    // //opponent
+    // if(oppArray) {
+    //     oppArray.forEach(opp => {
+    //         opp.display(oppXY.x, oppXY.y, oppXY.nx, oppXY.ny, oppXY.color);
+    //     })
+    //
+    // }
 
     if(oppBullet) {
         fill(255, 255, 255);

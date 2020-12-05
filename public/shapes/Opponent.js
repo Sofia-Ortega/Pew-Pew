@@ -1,10 +1,10 @@
 
 
 class Opponent {
-    constructor(startx, starty, color) {
+    constructor(startx, starty) {
         this.x = startx;
         this.y = starty;
-        this.color = color;
+
         this.radius = 50;
 
     }
@@ -19,8 +19,8 @@ class Opponent {
     }
 
 
-    display(getX, getY, nx, ny) {
-            fill(this.color);
+    display(getX, getY, nx, ny, color) {
+            fill(color);
             noStroke();
             circle(getX, getY, this.radius);
 
