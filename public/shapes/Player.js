@@ -15,6 +15,7 @@ class Player {
         this.interval = 25 // changes frequency of bullets
         this.storeFrame = -this.interval;
         this.changeXY = true;
+        this.changeTheta = true;
     }
 
     get coordinates() {
@@ -23,6 +24,10 @@ class Player {
 
     get changeCoord() {
         return this.changeXY;
+    }
+
+    get changeAim() {
+        return this.changeTheta;
     }
 
     get startInfo() {
@@ -37,8 +42,7 @@ class Player {
         return {
             'x': this.x,
             'y': this.y,
-            'nx': this.nx,
-            'ny': this.ny
+            'theta': this.theta
         }
     }
 
@@ -69,11 +73,14 @@ class Player {
         }
         this.changeXY = changeX || changeY;
 
+        this.changeTheta = true;
         // to aim
         if(keyIsDown(39) || keyIsDown(38)) {
             this.theta -= 0.05;
         } else if(keyIsDown(37) || keyIsDown(40)) {
             this.theta += 0.05;
+        } else {
+            this.changeTheta = false;
         }
 
     }

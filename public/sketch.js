@@ -61,7 +61,7 @@ function setup() {
 
     socket.on('oppBullets', data => {
         //get opp xy values
-        //FIXME: just need change in x and y, to calcuate path of opp bullets. Make a new opp class?
+        //FIXME: just need change in x and y, to calculate path of opp bullets. Make a new opp class?
         oppBullet = data.xy;
 
     })
@@ -96,7 +96,7 @@ function draw() {
     oppArray.forEach(opp => {
         if(oppXY[opp.id]) {
             tempXY = oppXY[opp.id];
-            opp.display(tempXY.x, tempXY.y, tempXY.nx, tempXY.ny);
+            opp.display(tempXY.x, tempXY.y, tempXY.theta);
             //opp.testDisplay();
         }
     })
@@ -136,8 +136,7 @@ function draw() {
 
     //emits xy location of player
     //FIXME: only send when player moves and separate out x and y coordinates vs nx and ny coordinates
-    if(p1.changeCoord) {
-        print(p1.sendMove)
+    if(p1.changeCoord || p1.changeAim) {
         socket.emit('xyPlayer', p1.sendMove);
     }
 

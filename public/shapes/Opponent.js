@@ -32,11 +32,13 @@ class Opponent {
 
     }
 
-    display(getX, getY, nx, ny) {
+    display(getX, getY, getTheta) {
             fill(this.color);
             noStroke();
             circle(getX, getY, this.radius);
 
+            let nx = (Math.cos(getTheta)*25) + getX;
+            let ny = (-Math.sin(getTheta)*25) + getY;
             stroke(255);
             strokeWeight(3);
             line(getX, getY, nx, ny);
