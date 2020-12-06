@@ -1,7 +1,7 @@
 var hit = false;
 var x, y, oppXY;
 var coord, oppBullet;
-var opp;
+var opp, tempXY;
 var oppArray = []
 var newRect, p1, border;
 var bullets = [];
@@ -9,6 +9,7 @@ var bulletsCoord = [];
 let rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
 var socket, id;
 var sentStart;
+var oppXY = {};
 
 //FIXME: add more than 2 players thingy;
 
@@ -26,6 +27,11 @@ function setup() {
         for (let id in playerId) {
             oppArray.push(new Opponent(playerId[id].x, playerId[id].y, id, playerId[id].color));
         }
+
+        oppArray.forEach(opp => {
+            oppXY = opp.startXY;
+        })
+
         print(oppArray);
 
     })
@@ -54,7 +60,7 @@ function setup() {
         //console.log("the data for oppXY:", data);
         oppXY = data;
         delete oppXY[socket.id];
-        print(oppXY);
+        //print(oppXY);
     });
 
     socket.on('oppBullets', data => {
@@ -89,10 +95,14 @@ function draw() {
     // // opponent
     // if(oppArray) {
     oppArray.forEach(opp => {
-       // print(oppArray);
+
         //opp.display(oppXY.x, oppXY.y, oppXY.nx, oppXY.ny);
-        print(oppXY)
-        opp.testDisplay();
+        if(oppXY[opp.id]) {
+            tempXY = oppXY[opp.id];
+            print(tempXY.x, tempXY.y, tempXY.nx, tempXY.ny);
+            opp.display(tempXY.x, tempXY.y, tempXY.nx, tempXY.ny);
+            //opp.testDisplay();
+        }
     })
 
     // }
@@ -158,5 +168,9 @@ function clearBullet(bullets) {
 
     return bullets;
 
+}
+
+function findSameId(dictId, id) {
 
 }
+
