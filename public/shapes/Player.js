@@ -20,8 +20,21 @@ class Player {
         return [this.x, this.y]
     }
 
-    get aim() {
-        return [this.x, this.nx, this.y, this.ny];
+    get startInfo() {
+        return {
+            'x': this.x,
+            'y': this.y,
+            'color': this.color
+        }
+    }
+
+    get sendInfo() {
+        return {
+            'x': this.x,
+            'y': this.y,
+            'nx': this.nx,
+            'ny': this.ny
+        }
     }
 
     controls() {
@@ -54,6 +67,7 @@ class Player {
 
         //line in player
         stroke(255);
+        strokeWeight(3);
         this.nx = (Math.cos(this.theta)*25) + this.x;
         this.ny = (-Math.sin(this.theta)*25) + this.y;
         line(this.x, this.y, this.nx, this.ny);
@@ -63,6 +77,8 @@ class Player {
         if(hit) {
             this.x = this.startx;
             this.y = this.starty;
+            this.nx = (Math.cos(this.theta)*25) + this.x;
+            this.ny = (-Math.sin(this.theta)*25) + this.y;
         }
     }
 

@@ -11,6 +11,13 @@ class Bullet {
     get coordinates() {
         return [this.x, this.y];
     }
+
+    get sendInfo() {
+        return {
+            'x': this.x,
+            'y': this.y
+        }
+    }
     display() {
         fill(255);
         circle(this.x, this.y, 10);
