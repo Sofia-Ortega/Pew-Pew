@@ -54,8 +54,6 @@ function setup() {
     })
     socket.on('oppXY', (data) => {
         //Gets everyone's (including client himself) coordinates (x, y, nx, ny). Store in oppXY var and delete own info
-        //FIXME: does the data change ea time a player switches? Track only when one player switches and
-        // don't send everyone elses info
         oppXY[data.id] = data;
         print(data);
 
@@ -138,7 +136,11 @@ function draw() {
 
     //emits xy location of player
     //FIXME: only send when player moves and separate out x and y coordinates vs nx and ny coordinates
-    socket.emit('xyPlayer', p1.sendInfo);
+    if(p1.changeCoord) {
+        print(p1.sendMove)
+        socket.emit('xyPlayer', p1.sendMove);
+    }
+
     //FIXME: uncecessary, only when player shoots send ONE value and have client calc the rest
     socket.emit('bullets', {'xy':bulletsCoord});
 

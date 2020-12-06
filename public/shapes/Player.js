@@ -14,10 +14,15 @@ class Player {
         this.ny = (-Math.sin(this.theta)*25) + this.y;
         this.interval = 25 // changes frequency of bullets
         this.storeFrame = -this.interval;
+        this.changeXY = true;
     }
 
     get coordinates() {
         return [this.x, this.y]
+    }
+
+    get changeCoord() {
+        return this.changeXY;
     }
 
     get startInfo() {
@@ -28,7 +33,7 @@ class Player {
         }
     }
 
-    get sendInfo() {
+    get sendMove() {
         return {
             'x': this.x,
             'y': this.y,
@@ -37,18 +42,32 @@ class Player {
         }
     }
 
+    get sendAim() {
+        return {
+            'theta': this.theta
+        }
+    }
+
+
     controls() {
+        let changeY = true
+        let changeX = true
         // to move player
         if(keyIsDown(87)) {
             this.y-=3;
         } else if(keyIsDown(83)) {
             this.y+=3;
+        } else {
+            changeY = false;
         }
         if(keyIsDown(65)) {
             this.x-=3;
         } else if(keyIsDown(68)) {
             this.x+=3;
+        } else {
+            changeX = false;
         }
+        this.changeXY = changeX || changeY;
 
         // to aim
         if(keyIsDown(39) || keyIsDown(38)) {
