@@ -1,5 +1,4 @@
 var hit = false;
-var x, y;
 var coord, oppBullet;
 var opp, tempXY;
 var oppArray = []
@@ -7,47 +6,44 @@ var newRect, p1, border;
 var bullets = [];
 var bulletsCoord = [];
 let rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
-var socket, id;
+var socket;
 var sentStart;
 var oppXY = {};
 
+//get ip address from ignored file
 var myIp = `http://${IP}:3000`;
 
-//FIXME: add more than 2 players thingy;
 
 function setup() {
     //............................Receiving..........................................
     socket = io.connect(myIp);
 
-    socket.on('connect', () => {
-        id = socket.id;
-    })
     socket.on('startPacket', playerId => {
-        print("Receving startInfo:", playerId);
-        print("My id:", id);
+        //When player first connects, gets dict of all currently connected players and info to add to opp class
 
         for (let id in playerId) {
             oppArray.push(new Opponent(playerId[id].x, playerId[id].y, id, playerId[id].color));
         }
 
+        //startXY begins at ea player's starting point
         oppArray.forEach(opp => {
-            oppXY = opp.startXY;
+            oppXY = opp.startXY; //FIXME: oppXY only last opp in array oppArray
         })
-
-        print(oppArray);
 
     })
 
     socket.on('oppConnect', (connectId) => {
-        //print("Opponent connecting:", connectId);
+        //once a new opp connects, already connected players get opp's info
         oppArray.push(new Opponent(connectId.x, connectId.y, connectId.id, connectId.color));
-        print("Opp connecting:", oppArray)
+        //FIXME: initialize oppXY w this
+
     })
 
     socket.on('oppDisconnect', disconnectId => {
-        print("Player has disconnected:", disconnectId);
+        //once opp disconnects, get their id and we delete from oppArray
         let i;
         for(i = oppArray.length; i >= 0; i -= 1) {
+            //FIXME: perhaps in a function to be more efficient (break?)
             if(oppArray[i]){
                 if(oppArray[i].id === disconnectId){
                     oppArray.splice(i, 1);
@@ -55,35 +51,38 @@ function setup() {
             }
         }
 
-        //print(oppArray);
-
     })
     socket.on('oppXY', (data) => {
-        //console.log("the data for oppXY:", data);
+        //Gets everyone's (including client himself) coordinates (x, y, nx, ny). Store in oppXY var and delete own info
+        //FIXME: does the data change ea time a player switches? Track only when one player switches and
+        // don't send everyone elses info
         oppXY = data;
         delete oppXY[socket.id];
-        //print(oppXY);
     });
 
     socket.on('oppBullets', data => {
+        //get opp xy values
+        //FIXME: just need change in x and y, to calcuate path of opp bullets. Make a new opp class?
         oppBullet = data.xy;
 
     })
 
     //...............................Canvas Setup.....................................
     createCanvas(600, 600);
-    noStroke();
-    x = width/2;
-    y = height/2;
+
+    //initialize player in player class in random location w random color
     p1 = new Player(rgb, Math.floor(Math.random()*(width-100)+50), Math.floor(Math.random()*(height-100)+50));
+    //send starter info to server
+    socket.emit('startInfo', p1.startInfo)
+
     //newRect = new Boundaries(500, 50, 60, 100);
     border = new Boundaries(0, 0, width, height);
 
 }
 
+//.............................................Draw.....................................................................
 function draw() {
     background(50);
-    noStroke();
     bulletsCoord = [];
 
     //displaying shapes
@@ -94,14 +93,11 @@ function draw() {
     })
 
 
-    // // opponent
+    //........................Opponent....................................
     // if(oppArray) {
     oppArray.forEach(opp => {
-
-        //opp.display(oppXY.x, oppXY.y, oppXY.nx, oppXY.ny);
         if(oppXY[opp.id]) {
             tempXY = oppXY[opp.id];
-            print(tempXY.x, tempXY.y, tempXY.nx, tempXY.ny);
             opp.display(tempXY.x, tempXY.y, tempXY.nx, tempXY.ny);
             //opp.testDisplay();
         }
@@ -117,6 +113,7 @@ function draw() {
 
     }
 
+    //..................................Updating player...............................
 
     //updating coordinates
     p1.controls();
@@ -141,38 +138,16 @@ function draw() {
     //clear off-screen bullets
     bullets = clearBullet(bullets);
 
-
-    if(!sentStart) {
-        socket.emit('startInfo', p1.startInfo)
-        sentStart = true;
-    }
-
+    //emits xy location of player
+    //FIXME: only send when player moves and seperate out x and y coordinates vs nx and ny coordinates
     socket.emit('xyPlayer', p1.sendInfo);
+    //FIXME: uncecessary, only when player shoots send ONE value and have client calc the rest
     socket.emit('bullets', {'xy':bulletsCoord});
 
 }
 
 
-function clearBullet(bullets) {
-    //takes in array of bullet classes and returns updated bullet list w/o bullets that have gone off screen
-    let i;
-    for(i = bullets.length; i >= 0; i -= 1) {
 
-        if(bullets[i]){
-            let bulletCoord = bullets[i].coordinates;
-            if(!border.checkHit(bulletCoord[0], bulletCoord[1])) {
-                bullets.splice(i, 1);
-            }
 
-        }
 
-    }
-
-    return bullets;
-
-}
-
-function findSameId(dictId, id) {
-
-}
 
