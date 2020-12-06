@@ -42,7 +42,7 @@ class Player {
         return {
             'x': this.x,
             'y': this.y,
-            'theta': this.theta
+            //'theta': this.theta
         }
     }
 

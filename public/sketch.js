@@ -1,6 +1,6 @@
 var hit = false;
 var coord, oppBullet;
-var opp, tempXY;
+var opp, tempXY, tempTheta;
 var newRect, p1, border;
 var socket;
 var oppArray = []
@@ -9,6 +9,7 @@ var bulletsCoord = [];
 let rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
 
 var oppXY = {};
+var oppAim = {};
 
 //get ip address from ignored file
 var myIp = `http://${IP}:3000`;
@@ -58,7 +59,10 @@ function setup() {
         print(data);
 
     });
-
+    socket.on('oppTheta', data => {
+        oppAim[data.id] = data;
+        print(data)
+    })
     socket.on('oppBullets', data => {
         //get opp xy values
         //FIXME: just need change in x and y, to calculate path of opp bullets. Make a new opp class?
@@ -94,9 +98,12 @@ function draw() {
 
     //........................Opponent....................................
     oppArray.forEach(opp => {
+        //FIXME: ternary instead? (like tempTheta)
         if(oppXY[opp.id]) {
             tempXY = oppXY[opp.id];
-            opp.display(tempXY.x, tempXY.y, tempXY.theta);
+            tempTheta = oppAim[opp.id]
+            //print(tempXY)
+            opp.display(tempXY.x, tempXY.y,tempTheta ? tempTheta.theta : 0);
             //opp.testDisplay();
         }
     })
@@ -136,8 +143,11 @@ function draw() {
 
     //emits xy location of player
     //FIXME: only send when player moves and separate out x and y coordinates vs nx and ny coordinates
-    if(p1.changeCoord || p1.changeAim) {
+    if(p1.changeCoord) {
         socket.emit('xyPlayer', p1.sendMove);
+    }
+    if(p1.changeAim) {
+        socket.emit('thetaPlayer', p1.sendAim);
     }
 
     //FIXME: uncecessary, only when player shoots send ONE value and have client calc the rest
