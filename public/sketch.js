@@ -1,5 +1,5 @@
 var hit = false;
-var x, y, oppXY;
+var x, y;
 var coord, oppBullet;
 var opp, tempXY;
 var oppArray = []
@@ -11,11 +11,13 @@ var socket, id;
 var sentStart;
 var oppXY = {};
 
+var myIp = `http://${IP}:3000`;
+
 //FIXME: add more than 2 players thingy;
 
 function setup() {
     //............................Receiving..........................................
-    socket = io.connect('http://localhost:3000');
+    socket = io.connect(myIp);
 
     socket.on('connect', () => {
         id = socket.id;
