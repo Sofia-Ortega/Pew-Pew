@@ -44,10 +44,10 @@ function setup() {
         //once opp disconnects, get their id and we delete from oppArray
         let i;
         for(i = oppArray.length; i >= 0; i -= 1) {
-            //FIXME: perhaps in a function to be more efficient (break?)
             if(oppArray[i]){
                 if(oppArray[i].id === disconnectId){
                     oppArray.splice(i, 1);
+                    break;
                 }
             }
         }
