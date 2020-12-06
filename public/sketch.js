@@ -47,13 +47,15 @@ function setup() {
             }
         }
 
-        print(oppArray);
+        //print(oppArray);
 
     })
-    // socket.on('oppXY', (data) => {
-    //     //console.log("the data for oppXY:", data);
-    //     oppXY = data;
-    // });
+    socket.on('oppXY', (data) => {
+        //console.log("the data for oppXY:", data);
+        oppXY = data;
+        delete oppXY[socket.id];
+        print(oppXY);
+    });
 
     socket.on('oppBullets', data => {
         oppBullet = data.xy;
@@ -89,6 +91,7 @@ function draw() {
     oppArray.forEach(opp => {
        // print(oppArray);
         //opp.display(oppXY.x, oppXY.y, oppXY.nx, oppXY.ny);
+        print(oppXY)
         opp.testDisplay();
     })
 
