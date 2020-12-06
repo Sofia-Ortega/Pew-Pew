@@ -26,9 +26,10 @@ io.sockets.on('connect', (socket) => {
         console.log(startPlayers)
     })
     socket.on('xyPlayer', data => {
-        //data.id = socket.id;
+        data.id = socket.id;
+        console.log(data)
         posPlayers[socket.id] = data
-        socket.broadcast.emit('oppXY', posPlayers);
+        socket.broadcast.emit('oppXY', data);
     })
     socket.on('bullets', data => {
         socket.broadcast.emit('oppBullets', data);

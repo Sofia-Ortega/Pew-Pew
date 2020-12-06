@@ -1,13 +1,13 @@
 var hit = false;
 var coord, oppBullet;
 var opp, tempXY;
-var oppArray = []
 var newRect, p1, border;
+var socket;
+var oppArray = []
 var bullets = [];
 var bulletsCoord = [];
 let rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
-var socket;
-var sentStart;
+
 var oppXY = {};
 
 //get ip address from ignored file
@@ -56,8 +56,9 @@ function setup() {
         //Gets everyone's (including client himself) coordinates (x, y, nx, ny). Store in oppXY var and delete own info
         //FIXME: does the data change ea time a player switches? Track only when one player switches and
         // don't send everyone elses info
-        oppXY = data;
-        delete oppXY[socket.id];
+        oppXY[data.id] = data;
+        print(data);
+
     });
 
     socket.on('oppBullets', data => {
@@ -94,7 +95,6 @@ function draw() {
 
 
     //........................Opponent....................................
-    // if(oppArray) {
     oppArray.forEach(opp => {
         if(oppXY[opp.id]) {
             tempXY = oppXY[opp.id];
@@ -102,8 +102,6 @@ function draw() {
             //opp.testDisplay();
         }
     })
-
-    // }
 
     if(oppBullet) {
         fill(255, 255, 255);
@@ -139,7 +137,7 @@ function draw() {
     bullets = clearBullet(bullets);
 
     //emits xy location of player
-    //FIXME: only send when player moves and seperate out x and y coordinates vs nx and ny coordinates
+    //FIXME: only send when player moves and separate out x and y coordinates vs nx and ny coordinates
     socket.emit('xyPlayer', p1.sendInfo);
     //FIXME: uncecessary, only when player shoots send ONE value and have client calc the rest
     socket.emit('bullets', {'xy':bulletsCoord});
