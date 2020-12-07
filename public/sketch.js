@@ -28,7 +28,7 @@ function setup() {
 
         //startXY begins at ea player's starting point
         oppArray.forEach(opp => {
-            oppXY[opp.id] = opp.startXY; //FIXME: oppXY only last opp in array oppArray
+            oppXY[opp.id] = opp.startXY;
 
         })
 
@@ -54,6 +54,12 @@ function setup() {
                 }
             }
         }
+        delete oppXY[disconnectId]
+        delete oppAim[disconnectId]
+
+        print(disconnectId)
+        print(oppXY)
+        print(oppAim)
 
     })
     socket.on('oppXY', (data) => {
@@ -63,6 +69,7 @@ function setup() {
 
     });
     socket.on('oppTheta', data => {
+        //receives theta from opp and applies it to oppAim according id
         oppAim[data.id] = data;
         print(data)
     })
