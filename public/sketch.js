@@ -28,15 +28,18 @@ function setup() {
 
         //startXY begins at ea player's starting point
         oppArray.forEach(opp => {
-            oppXY = opp.startXY; //FIXME: oppXY only last opp in array oppArray
+            oppXY[opp.id] = opp.startXY; //FIXME: oppXY only last opp in array oppArray
+
         })
+
 
     })
 
     socket.on('oppConnect', (connectId) => {
         //once a new opp connects, already connected players get opp's info
-        oppArray.push(new Opponent(connectId.x, connectId.y, connectId.id, connectId.color));
-        //FIXME: initialize oppXY w this
+        var tempOpp = new Opponent(connectId.x, connectId.y, connectId.id, connectId.color)
+        oppArray.push(tempOpp);
+        oppXY[tempOpp.id] = tempOpp.startXY;
 
     })
 
@@ -63,12 +66,6 @@ function setup() {
         oppAim[data.id] = data;
         print(data)
     })
-    // socket.on('oppBullets', data => {
-    //     //get opp xy values
-    //     //FIXME: just need change in x and y, to calculate path of opp bullets. Make a new opp class?
-    //     oppBullet = data.xy;
-    //
-    // })
     socket.on('bulletShot', data => {
         bullets.push(new Bullet(data.x, data.y, data.dirx, data.diry))
     })

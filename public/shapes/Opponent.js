@@ -20,7 +20,8 @@ class Opponent {
             'x': this.x,
             'y': this.y,
             'nx': 25 + this.x,
-            'ny': 25 + this.y
+            'ny': 25 + this.y,
+            'id': this.id
         }
     }
 
