@@ -14,10 +14,20 @@ class Player {
         this.ny = (-Math.sin(this.theta)*25) + this.y;
         this.interval = 25 // changes frequency of bullets
         this.storeFrame = -this.interval;
+        this.changeXY = true;
+        this.changeTheta = true;
     }
 
     get coordinates() {
         return [this.x, this.y]
+    }
+
+    get changeCoord() {
+        return this.changeXY;
+    }
+
+    get changeAim() {
+        return this.changeTheta;
     }
 
     get startInfo() {
@@ -28,33 +38,49 @@ class Player {
         }
     }
 
-    get sendInfo() {
+    get sendMove() {
         return {
             'x': this.x,
             'y': this.y,
-            'nx': this.nx,
-            'ny': this.ny
+            //'theta': this.theta
         }
     }
 
+    get sendAim() {
+        return {
+            'theta': this.theta
+        }
+    }
+
+
     controls() {
+        let changeY = true
+        let changeX = true
         // to move player
         if(keyIsDown(87)) {
             this.y-=3;
         } else if(keyIsDown(83)) {
             this.y+=3;
+        } else {
+            changeY = false;
         }
         if(keyIsDown(65)) {
             this.x-=3;
         } else if(keyIsDown(68)) {
             this.x+=3;
+        } else {
+            changeX = false;
         }
+        this.changeXY = changeX || changeY;
 
+        this.changeTheta = true;
         // to aim
         if(keyIsDown(39) || keyIsDown(38)) {
             this.theta -= 0.05;
         } else if(keyIsDown(37) || keyIsDown(40)) {
             this.theta += 0.05;
+        } else {
+            this.changeTheta = false;
         }
 
     }
@@ -82,14 +108,20 @@ class Player {
         }
     }
 
-    shoot(bullets) {
+    shoot() {
         if (keyIsDown(32) && Math.abs(frameCount-this.storeFrame >= this.interval)) {
             let dirx = this.nx - this.x;
             let diry = this.ny - this.y
-            bullets.push(new Bullet(this.nx, this.ny, dirx, diry));
+            //bullets.push(new Bullet(this.nx, this.ny, dirx, diry));
             this.storeFrame = frameCount
+            return {
+                'x': this.x,
+                'y': this.y,
+                'dirx': dirx,
+                'diry': diry
+            }
         }
-        return bullets;
+        return false;
     }
 
 }

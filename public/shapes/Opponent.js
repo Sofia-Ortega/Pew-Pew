@@ -20,7 +20,8 @@ class Opponent {
             'x': this.x,
             'y': this.y,
             'nx': 25 + this.x,
-            'ny': 25 + this.y
+            'ny': 25 + this.y,
+            'id': this.id
         }
     }
 
@@ -32,11 +33,13 @@ class Opponent {
 
     }
 
-    display(getX, getY, nx, ny) {
+    display(getX, getY, getTheta) {
             fill(this.color);
             noStroke();
             circle(getX, getY, this.radius);
 
+            let nx = (Math.cos(getTheta)*25) + getX;
+            let ny = (-Math.sin(getTheta)*25) + getY;
             stroke(255);
             strokeWeight(3);
             line(getX, getY, nx, ny);

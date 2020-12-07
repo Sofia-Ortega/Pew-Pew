@@ -5,7 +5,6 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
 var startPlayers = {}
-var posPlayers = {}
 
 app.use(express.static('public'));
 
@@ -26,17 +25,24 @@ io.sockets.on('connect', (socket) => {
         console.log(startPlayers)
     })
     socket.on('xyPlayer', data => {
-        //data.id = socket.id;
-        posPlayers[socket.id] = data
-        socket.broadcast.emit('oppXY', posPlayers);
+        data.id = socket.id;
+        //console.log(data)
+        socket.broadcast.emit('oppXY', data);
     })
-    socket.on('bullets', data => {
-        socket.broadcast.emit('oppBullets', data);
+    socket.on('thetaPlayer', data => {
+        data.id = socket.id
+        //console.log(data);
+        socket.broadcast.emit('oppTheta', data);
+
+    })
+    socket.on('newBullet', data => {
+       // data.id = socket.id;
+        socket.broadcast.emit('bulletShot', data);
+        console.log(data)
     })
     socket.on('disconnect', () => {
         console.log('user disconnected:', socket.id);
         delete startPlayers[socket.id]
-        delete posPlayers[socket.id]
         socket.broadcast.emit('oppDisconnect', socket.id)
         console.log(startPlayers)
 
