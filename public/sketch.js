@@ -1,13 +1,11 @@
 var hit = false;
-var coord, oppBullet;
+var coord;
 var opp, tempXY, tempTheta;
 var newRect, p1, border, shot, bulletShot;
 var socket;
 var oppArray = []
 var bullets = [];
-var bulletsCoord = [];
 let rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
-
 var oppXY = {};
 var oppAim = {};
 
@@ -16,12 +14,11 @@ var myIp = `http://${IP}:3000`;
 
 
 function setup() {
-    //............................Receiving..........................................
+    //...............................................Receiving..........................................
     socket = io.connect(myIp);
 
     socket.on('startPacket', playerId => {
         //When player first connects, gets dict of all currently connected players and info to add to opp class
-
         for (let id in playerId) {
             oppArray.push(new Opponent(playerId[id].x, playerId[id].y, id, playerId[id].color));
         }
@@ -29,22 +26,16 @@ function setup() {
         //startXY begins at ea player's starting point
         oppArray.forEach(opp => {
             oppXY[opp.id] = opp.startXY;
-
         })
-
-
     })
-
     socket.on('oppConnect', (connectId) => {
         //once a new opp connects, already connected players get opp's info
         var tempOpp = new Opponent(connectId.x, connectId.y, connectId.id, connectId.color)
         oppArray.push(tempOpp);
         oppXY[tempOpp.id] = tempOpp.startXY;
-
     })
-
     socket.on('oppDisconnect', disconnectId => {
-        //once opp disconnects, get their id and we delete from oppArray
+        //once opp disconnects, get their id and we delete from oppArray, oppXY, and oppAim
         let i;
         for(i = oppArray.length; i >= 0; i -= 1) {
             if(oppArray[i]){
@@ -57,23 +48,18 @@ function setup() {
         delete oppXY[disconnectId]
         delete oppAim[disconnectId]
 
-        print(disconnectId)
-        print(oppXY)
-        print(oppAim)
-
     })
     socket.on('oppXY', (data) => {
         //Gets everyone's (including client himself) coordinates (x, y, nx, ny). Store in oppXY var and delete own info
         oppXY[data.id] = data;
-        print(data);
 
     });
     socket.on('oppTheta', data => {
         //receives theta from opp and applies it to oppAim according id
         oppAim[data.id] = data;
-        print(data)
     })
     socket.on('bulletShot', data => {
+        //Starts new Bullet class with bullet data of x, y, change in x (dirx), and change in y (diry)
         bullets.push(new Bullet(data.x, data.y, data.dirx, data.diry))
     })
 
@@ -93,7 +79,6 @@ function setup() {
 //.............................................Draw.....................................................................
 function draw() {
     background(50);
-    bulletsCoord = [];
 
     //displaying shapes
     p1.display();
@@ -103,25 +88,16 @@ function draw() {
     })
 
 
-    //........................Opponent....................................
+    //........................Opponent.................................................
     oppArray.forEach(opp => {
         //FIXME: ternary instead? (like tempTheta)
         if(oppXY[opp.id]) {
             tempXY = oppXY[opp.id];
             tempTheta = oppAim[opp.id]
-            //print(tempXY)
             opp.display(tempXY.x, tempXY.y,tempTheta ? tempTheta.theta : 0);
             //opp.testDisplay();
         }
     })
-
-    if(oppBullet) {
-        fill(255, 255, 255);
-        oppBullet.forEach(bullets => {
-            circle(bullets[0], bullets[1], 10)
-        })
-
-    }
 
     //..................................Updating player...............................
 
@@ -129,10 +105,9 @@ function draw() {
     p1.controls();
     bullets.forEach(bullets => {
         bullets.update();
-        bulletsCoord.push(bullets.coordinates);
-
     })
 
+    //shoots bullets
     shot = p1.shoot();
     if (shot) {
         bulletShot = new Bullet(shot.x, shot.y, shot.dirx, shot.diry)
@@ -155,16 +130,13 @@ function draw() {
     bullets = clearBullet(bullets);
 
     //emits xy location of player
-    //FIXME: only send when player moves and separate out x and y coordinates vs nx and ny coordinates
     if(p1.changeCoord) {
         socket.emit('xyPlayer', p1.sendMove);
     }
+    //emits theta of player aimer
     if(p1.changeAim) {
         socket.emit('thetaPlayer', p1.sendAim);
     }
-
-    //FIXME: uncecessary, only when player shoots send ONE value and have client calc the rest
-    socket.emit('bullets', {'xy':bulletsCoord});
 
 }
 

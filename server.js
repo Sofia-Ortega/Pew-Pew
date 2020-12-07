@@ -35,9 +35,6 @@ io.sockets.on('connect', (socket) => {
         socket.broadcast.emit('oppTheta', data);
 
     })
-    socket.on('bullets', data => {
-        socket.broadcast.emit('oppBullets', data);
-    })
     socket.on('newBullet', data => {
        // data.id = socket.id;
         socket.broadcast.emit('bulletShot', data);
