@@ -10,12 +10,13 @@ var oppXY = {};
 var oppAim = {};
 
 //get ip address from ignored file
-var myIp = `http://${IP}:3000`;
+//var myIp = `http://${IP}:3000`;
 
 
 function setup() {
     //...............................................Receiving..........................................
-    socket = io.connect(myIp);
+    //socket = io.connect(myIp);
+    var socket = io();
 
     socket.on('startPacket', playerId => {
         //When player first connects, gets dict of all currently connected players and info to add to opp class
