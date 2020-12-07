@@ -31,12 +31,17 @@ io.sockets.on('connect', (socket) => {
     })
     socket.on('thetaPlayer', data => {
         data.id = socket.id
-        console.log(data);
+        //console.log(data);
         socket.broadcast.emit('oppTheta', data);
 
     })
     socket.on('bullets', data => {
         socket.broadcast.emit('oppBullets', data);
+    })
+    socket.on('newBullet', data => {
+       // data.id = socket.id;
+        socket.broadcast.emit('bulletShot', data);
+        console.log(data)
     })
     socket.on('disconnect', () => {
         console.log('user disconnected:', socket.id);

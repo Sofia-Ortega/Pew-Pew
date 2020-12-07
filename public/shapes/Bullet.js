@@ -15,7 +15,9 @@ class Bullet {
     get sendInfo() {
         return {
             'x': this.x,
-            'y': this.y
+            'y': this.y,
+            'dirx': this.dirx*5,
+            'diry': this.diry*5
         }
     }
     display() {

@@ -1,7 +1,7 @@
 var hit = false;
 var coord, oppBullet;
 var opp, tempXY, tempTheta;
-var newRect, p1, border;
+var newRect, p1, border, shot, bulletShot;
 var socket;
 var oppArray = []
 var bullets = [];
@@ -63,11 +63,14 @@ function setup() {
         oppAim[data.id] = data;
         print(data)
     })
-    socket.on('oppBullets', data => {
-        //get opp xy values
-        //FIXME: just need change in x and y, to calculate path of opp bullets. Make a new opp class?
-        oppBullet = data.xy;
-
+    // socket.on('oppBullets', data => {
+    //     //get opp xy values
+    //     //FIXME: just need change in x and y, to calculate path of opp bullets. Make a new opp class?
+    //     oppBullet = data.xy;
+    //
+    // })
+    socket.on('bulletShot', data => {
+        bullets.push(new Bullet(data.x, data.y, data.dirx, data.diry))
     })
 
     //...............................Canvas Setup.....................................
@@ -126,7 +129,13 @@ function draw() {
 
     })
 
-    bullets = p1.shoot(bullets);
+    shot = p1.shoot();
+    if (shot) {
+        bulletShot = new Bullet(shot.x, shot.y, shot.dirx, shot.diry)
+        socket.emit('newBullet', bulletShot.sendInfo)
+        bullets.push(bulletShot);
+
+    }
 
     //checking if hit
     coord = p1.coordinates;

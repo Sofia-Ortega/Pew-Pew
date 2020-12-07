@@ -108,14 +108,20 @@ class Player {
         }
     }
 
-    shoot(bullets) {
+    shoot() {
         if (keyIsDown(32) && Math.abs(frameCount-this.storeFrame >= this.interval)) {
             let dirx = this.nx - this.x;
             let diry = this.ny - this.y
-            bullets.push(new Bullet(this.nx, this.ny, dirx, diry));
+            //bullets.push(new Bullet(this.nx, this.ny, dirx, diry));
             this.storeFrame = frameCount
+            return {
+                'x': this.x,
+                'y': this.y,
+                'dirx': dirx,
+                'diry': diry
+            }
         }
-        return bullets;
+        return false;
     }
 
 }
