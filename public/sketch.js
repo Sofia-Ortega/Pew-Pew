@@ -2,7 +2,7 @@ var hit = false;
 var coord;
 var opp, tempXY, tempTheta;
 var newRect, p1, border, shot, bulletShot;
-var socket;
+//var socket;
 var oppArray = []
 var bullets = [];
 let rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
@@ -10,12 +10,13 @@ var oppXY = {};
 var oppAim = {};
 
 //get ip address from ignored file
-var myIp = `http://${IP}:3000`;
+//var myIp = `http://${IP}:3000`;
 
-
+var socket = io();
 function setup() {
     //...............................................Receiving..........................................
-    socket = io.connect(myIp);
+    //socket = io.connect(myIp);
+
 
     socket.on('startPacket', playerId => {
         //When player first connects, gets dict of all currently connected players and info to add to opp class
