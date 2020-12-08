@@ -16,7 +16,7 @@ var io = require('socket.io')(server);
 
 var startPlayers = {}
 
-app.use(express.static('public'));
+// app.use(express.static('public'));
 
 io.sockets.on('connect', (socket) => {
     console.log('a user connected:', socket.id);
