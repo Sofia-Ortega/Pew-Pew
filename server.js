@@ -1,9 +1,18 @@
+var PORT = process.env.PORT || 3000;
+var express = require('express');
+var app = express();
 
-const express = require('express')
-const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
-const PORT = process.env.PORT || 3000
+var http = require('http');
+var server = http.Server(app);
+
+app.use(express.static('public'));
+
+server.listen(PORT, function() {
+    console.log('My Server is running on port 3000');
+});
+
+var io = require('socket.io')(server);
+
 
 var startPlayers = {}
 
@@ -51,6 +60,6 @@ io.sockets.on('connect', (socket) => {
 
 });
 
-http.listen(PORT, () => {
-    console.log('My socket server is running on port 3000');
-})
+// http.listen(PORT, () => {
+//     console.log('My socket server is running on port 3000');
+// })
