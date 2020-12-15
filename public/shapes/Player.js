@@ -40,10 +40,11 @@ class Player {
     }
 
     get sendMove() {
+        this.changeXY = false;
         return {
             'x': this.x,
             'y': this.y,
-            //'theta': this.theta
+            'dir': this.dir
         }
     }
 
@@ -54,7 +55,13 @@ class Player {
     }
 
     set direction(str) {
-        this.dir = str;
+        if(str !== this.dir) {
+            this.dir = str;
+            this.changeXY = true;
+        }
+
+
+
     }
 
     controls() {
@@ -67,7 +74,6 @@ class Player {
         } else {
             this.changeTheta = false;
         }
-
     }
 
     display() {

@@ -132,6 +132,7 @@ function draw() {
 
     //emits xy location of player
     if(p1.changeCoord) {
+        print('changed direction')
         socket.emit('xyPlayer', p1.sendMove);
     }
     //emits theta of player aimer
@@ -143,16 +144,12 @@ function draw() {
 
 function keyPressed() {
     if(keyCode === 87) {
-        print('87');
         p1.direction = 'up';
     } else if(keyCode === 83) {
-        print('83');
         p1.direction = 'down';
     } else if(keyCode === 65) {
-        print('65');
         p1.direction = 'left';
     } else if(keyCode === 68) {
-        print('68');
         p1.direction = 'right';
     }
 
