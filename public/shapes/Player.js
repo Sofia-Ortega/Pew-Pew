@@ -65,18 +65,6 @@ class Player {
     }
 
     controls() {
-        this.changeTheta = true;
-        // to aim
-        if(keyIsDown(39) || keyIsDown(38)) {
-            this.theta -= 0.05;
-        } else if(keyIsDown(37) || keyIsDown(40)) {
-            this.theta += 0.05;
-        } else {
-            this.changeTheta = false;
-        }
-    }
-
-    display() {
         switch(this.dir) {
             case 'right':
                 this.x += 3;
@@ -92,6 +80,18 @@ class Player {
                 break;
         }
 
+        this.changeTheta = true;
+        // to aim
+        if(keyIsDown(39) || keyIsDown(38)) {
+            this.theta -= 0.05;
+        } else if(keyIsDown(37) || keyIsDown(40)) {
+            this.theta += 0.05;
+        } else {
+            this.changeTheta = false;
+        }
+    }
+
+    display() {
 
         fill(this.color);
 

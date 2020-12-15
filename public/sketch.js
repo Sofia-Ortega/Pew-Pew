@@ -93,6 +93,8 @@ function draw() {
     oppArray.forEach(opp => {
         //FIXME: ternary instead? (like tempTheta)
         if(oppXY[opp.id]) {
+            opp.direction = oppXY[opp.id].dir;
+            //print(oppXY[opp.id].dir);
             tempXY = oppXY[opp.id];
             tempTheta = oppAim[opp.id]
             opp.display(tempXY.x, tempXY.y,tempTheta ? tempTheta.theta : 0);
