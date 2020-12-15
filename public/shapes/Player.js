@@ -56,43 +56,8 @@ class Player {
     set direction(str) {
         this.dir = str;
     }
-    // shiftX(positive) {
-    //     if(positive) {
-    //         this.x += 3
-    //     } else {
-    //         this.x -= 3
-    //     }
-    // }
-    //
-    // shiftY(positive) {
-    //     if(positive) {
-    //         this.y += 3
-    //     } else {
-    //         this.y -= 3
-    //     }
-    // }
 
     controls() {
-        // let changeY = true
-        // let changeX = true
-        //
-        // // to move player
-        // if(keyIsDown(87)) {
-        //     this.y-=3;
-        // } else if(keyIsDown(83)) {
-        //     this.y+=3;
-        // } else {
-        //     changeY = false;
-        // }
-        // if(keyIsDown(65)) {
-        //     this.x-=3;
-        // } else if(keyIsDown(68)) {
-        //     this.x+=3;
-        // } else {
-        //     changeX = false;
-        // }
-        // this.changeXY = changeX || changeY;
-
         this.changeTheta = true;
         // to aim
         if(keyIsDown(39) || keyIsDown(38)) {
@@ -106,14 +71,19 @@ class Player {
     }
 
     display() {
-        if(this.dir === 'right') {
-            this.x += 3;
-        } else if(this.dir === 'left') {
-            this.x -= 3;
-        } else if(this.dir === 'down') {
-            this.y += 3;
-        } else if(this.dir === 'up') {
-            this.y -= 3;
+        switch(this.dir) {
+            case 'right':
+                this.x += 3;
+                break;
+            case 'left':
+                this.x -= 3;
+                break;
+            case 'down':
+                this.y += 3;
+                break;
+            case 'up':
+                this.y -= 3;
+                break;
         }
 
 
