@@ -126,6 +126,7 @@ function draw() {
     //if hit, teleport player to starting position and clear bullets
     if (hit) {
         p1.teleport(true);
+        socket.emit('xyPlayer', p1.sendMove);
         bullets = [];
     }
 
