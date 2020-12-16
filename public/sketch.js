@@ -20,6 +20,7 @@ function setup() {
 
     socket.on('startPacket', playerId => {
         //When player first connects, gets dict of all currently connected players and info to add to opp class
+        print('startPacket:', playerId);
         for (let id in playerId) {
             oppArray.push(new Opponent(playerId[id].x, playerId[id].y, id, playerId[id].color));
         }
@@ -31,6 +32,7 @@ function setup() {
     })
     socket.on('oppConnect', (connectId) => {
         //once a new opp connects, already connected players get opp's info
+        print('oppConnect:', connectId);
         var tempOpp = new Opponent(connectId.x, connectId.y, connectId.id, connectId.color)
         oppArray.push(tempOpp);
         oppXY[tempOpp.id] = tempOpp.startXY;
@@ -135,7 +137,7 @@ function draw() {
 
     //emits xy location of player
     if(p1.changeCoord) {
-        print('changed direction')
+        //print('changed direction')
         socket.emit('xyPlayer', p1.sendMove);
     }
     //emits theta of player aimer

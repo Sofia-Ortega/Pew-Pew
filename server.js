@@ -16,8 +16,9 @@ var io = require('socket.io')(server);
 
 var startPlayers = {}
 
-io.sockets.on('connect', (socket) => {
+io.on('connect', (socket) => {
     console.log('a user connected:', socket.id);
+    console.log(startPlayers);
     io.to(socket.id).emit("startPacket", startPlayers);
 
     socket.on('player', (data) => {
@@ -30,7 +31,7 @@ io.sockets.on('connect', (socket) => {
         data.id = socket.id;
         socket.broadcast.emit('oppConnect', data)
 
-        console.log(startPlayers)
+        //console.log(startPlayers)
     })
     socket.on('xyPlayer', data => {
         data.id = socket.id;
@@ -46,13 +47,13 @@ io.sockets.on('connect', (socket) => {
     socket.on('newBullet', data => {
        // data.id = socket.id;
         socket.broadcast.emit('bulletShot', data);
-        console.log(data)
+        //console.log(data)
     })
     socket.on('disconnect', () => {
         console.log('user disconnected:', socket.id);
         delete startPlayers[socket.id]
         socket.broadcast.emit('oppDisconnect', socket.id)
-        console.log(startPlayers)
+        //console.log(startPlayers)
 
     })
 

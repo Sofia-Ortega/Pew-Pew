@@ -50,7 +50,7 @@ class Opponent {
             this.storeY = getY;
 
         } else {
-            print('in the switch statement')
+            //print('in the switch statement')
             switch(this.dir) {
                 case 'right':
                     this.x += 3;
