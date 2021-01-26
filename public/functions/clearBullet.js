@@ -9,9 +9,7 @@ function clearBullet(bullets) {
             if(!border.checkHit(bulletCoord[0], bulletCoord[1])) {
                 bullets.splice(i, 1);
             }
-
         }
-
     }
 
     return bullets;

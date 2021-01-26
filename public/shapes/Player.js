@@ -59,12 +59,10 @@ class Player {
             this.dir = str;
             this.changeXY = true;
         }
-
-
-
     }
 
     controls() {
+        //update pos of player depending on what direction going
         switch(this.dir) {
             case 'right':
                 this.x += 3;
@@ -80,8 +78,8 @@ class Player {
                 break;
         }
 
-        this.changeTheta = true;
         // to aim
+        this.changeTheta = true;
         if(keyIsDown(39) || keyIsDown(38)) {
             this.theta -= 0.05;
         } else if(keyIsDown(37) || keyIsDown(40)) {
@@ -92,7 +90,6 @@ class Player {
     }
 
     display() {
-
         fill(this.color);
 
         noStroke();
@@ -116,10 +113,10 @@ class Player {
     }
 
     shoot() {
+        //shoot bullets in timed, seperated intervals
         if (keyIsDown(32) && Math.abs(frameCount-this.storeFrame >= this.interval)) {
             let dirx = this.nx - this.x;
             let diry = this.ny - this.y
-            //bullets.push(new Bullet(this.nx, this.ny, dirx, diry));
             this.storeFrame = frameCount
             return {
                 'x': this.x,

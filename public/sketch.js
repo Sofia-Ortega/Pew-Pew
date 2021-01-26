@@ -20,7 +20,7 @@ function setup() {
 
     socket.on('startPacket', playerId => {
         //When player first connects, gets dict of all currently connected players and info to add to opp class
-        print('startPacket:', playerId);
+        print('startPacket:');
         for (let id in playerId) {
             oppArray.push(new Opponent(playerId[id].x, playerId[id].y, id, playerId[id].color));
         }
@@ -93,7 +93,6 @@ function draw() {
 
     //........................Opponent.................................................
     oppArray.forEach(opp => {
-        //FIXME: ternary instead? (like tempTheta)
         if(oppXY[opp.id]) {
             opp.direction = oppXY[opp.id].dir;
             //print(oppXY[opp.id].dir);
@@ -147,6 +146,7 @@ function draw() {
 
 }
 
+//alerting what key is pressed
 function keyPressed() {
     if(keyCode === 87) {
         p1.direction = 'up';

@@ -10,7 +10,6 @@ class Opponent {
         this.storeY = starty;
         this.color = color;
         this.oppId = id;
-
         this.radius = 50;
         this.dir = 0;
     }
@@ -33,24 +32,17 @@ class Opponent {
         }
     }
 
-    testDisplay() {
-        fill(this.color)
-        noStroke();
-        circle(this.startX, this.startY, 50);
-
-
-    }
-
-
     display(getX, getY, getTheta) {
+        //displays opponent players depending on their x, y, angle of their aimer
         if(getX !== this.storeX && getY !== this.storeY) {
+            //if the x don't match, update direction
             this.x = getX;
             this.y = getY;
             this.storeX = getX;
             this.storeY = getY;
 
         } else {
-            //print('in the switch statement')
+            //keep moving in same direction
             switch(this.dir) {
                 case 'right':
                     this.x += 3;
@@ -67,7 +59,7 @@ class Opponent {
             }
         }
 
-
+            //actually display player
             fill(this.color);
             noStroke();
             circle(this.x, this.y, this.radius);
