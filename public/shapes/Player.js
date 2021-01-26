@@ -16,6 +16,7 @@ class Player {
         this.storeFrame = -this.interval;
         this.changeXY = true;
         this.changeTheta = true;
+
     }
 
     get coordinates() {
@@ -39,10 +40,11 @@ class Player {
     }
 
     get sendMove() {
+        this.changeXY = false;
         return {
             'x': this.x,
             'y': this.y,
-            //'theta': this.theta
+            'dir': this.dir
         }
     }
 
@@ -52,29 +54,32 @@ class Player {
         }
     }
 
+    set direction(str) {
+        if(str !== this.dir) {
+            this.dir = str;
+            this.changeXY = true;
+        }
+    }
 
     controls() {
-        let changeY = true
-        let changeX = true
-        // to move player
-        if(keyIsDown(87)) {
-            this.y-=3;
-        } else if(keyIsDown(83)) {
-            this.y+=3;
-        } else {
-            changeY = false;
+        //update pos of player depending on what direction going
+        switch(this.dir) {
+            case 'right':
+                this.x += 3;
+                break;
+            case 'left':
+                this.x -= 3;
+                break;
+            case 'down':
+                this.y += 3;
+                break;
+            case 'up':
+                this.y -= 3;
+                break;
         }
-        if(keyIsDown(65)) {
-            this.x-=3;
-        } else if(keyIsDown(68)) {
-            this.x+=3;
-        } else {
-            changeX = false;
-        }
-        this.changeXY = changeX || changeY;
 
-        this.changeTheta = true;
         // to aim
+        this.changeTheta = true;
         if(keyIsDown(39) || keyIsDown(38)) {
             this.theta -= 0.05;
         } else if(keyIsDown(37) || keyIsDown(40)) {
@@ -82,7 +87,6 @@ class Player {
         } else {
             this.changeTheta = false;
         }
-
     }
 
     display() {
@@ -109,10 +113,10 @@ class Player {
     }
 
     shoot() {
+        //shoot bullets in timed, seperated intervals
         if (keyIsDown(32) && Math.abs(frameCount-this.storeFrame >= this.interval)) {
             let dirx = this.nx - this.x;
             let diry = this.ny - this.y
-            //bullets.push(new Bullet(this.nx, this.ny, dirx, diry));
             this.storeFrame = frameCount
             return {
                 'x': this.x,
