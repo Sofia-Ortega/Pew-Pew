@@ -1,25 +1,23 @@
 var hit = false;
 var coord;
 var opp, tempXY, tempTheta;
-var newRect, p1, border, shot, bulletShot;
-//var socket;
+var p1, border, shot, bulletShot;
+var newRect; // For future teleportation feature
 var oppArray = []
 var bullets = [];
 let rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
 var oppXY = {};
 var oppAim = {};
 
-//get ip address from ignored file
-//var myIp = `http://${IP}:3000`;
 
 var socket = io();
 function setup() {
     //...............................................Receiving..........................................
-    //socket = io.connect(myIp);
-
-
     socket.on('startPacket', playerId => {
         //When player first connects, gets dict of all currently connected players and info to add to opp class
+        //FIXME: on localhost, people are not receiving the startPacket
+            //--> new players can't see old players
+            // not issue in heroku
         print('startPacket:');
         for (let id in playerId) {
             oppArray.push(new Opponent(playerId[id].x, playerId[id].y, id, playerId[id].color));
@@ -71,6 +69,7 @@ function setup() {
 
     //initialize player in player class in random location w random color
     p1 = new Player(rgb, Math.floor(Math.random()*(width-100)+50), Math.floor(Math.random()*(height-100)+50));
+
     //send starter info to server
     socket.emit('startInfo', p1.startInfo)
 
@@ -85,7 +84,7 @@ function draw() {
 
     //displaying shapes
     p1.display();
-    //newRect.display();
+    //newRect.display(); //test for future teleport implementation (with line 123)
     bullets.forEach(bullets => {
         bullets.display();
     })
@@ -95,11 +94,9 @@ function draw() {
     oppArray.forEach(opp => {
         if(oppXY[opp.id]) {
             opp.direction = oppXY[opp.id].dir;
-            //print(oppXY[opp.id].dir);
             tempXY = oppXY[opp.id];
             tempTheta = oppAim[opp.id]
             opp.display(tempXY.x, tempXY.y,tempTheta ? tempTheta.theta : 0);
-            //opp.testDisplay();
         }
     })
 
@@ -122,7 +119,9 @@ function draw() {
 
     //checking if hit
     coord = p1.coordinates;
+    //for future teleporter implementation
     hit = /*newRect.checkHit(coord[0], coord[1]) || */!(border.checkHit(coord[0], coord[1]));
+
 
     //if hit, teleport player to starting position and clear bullets
     if (hit) {
@@ -157,7 +156,6 @@ function keyPressed() {
     } else if(keyCode === 68) {
         p1.direction = 'right';
     }
-
 }
 
 

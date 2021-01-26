@@ -28,7 +28,6 @@ io.on('connect', (socket) => {
     })
     socket.on('xyPlayer', data => {
         data.id = socket.id;
-        //console.log(data)
         socket.broadcast.emit('oppXY', data);
     })
     socket.on('thetaPlayer', data => {
